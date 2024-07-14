@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const User = require('./model/license.js'); // Assuming the schema is defined in license.js
+const User = require('./model/license.js'); // Assuming the schema is defined in userSchema.js
 
 const app = express();
 
@@ -61,7 +61,8 @@ app.post('/gpage', async (req, res) => {
 
         const isMatch = await bcrypt.compare(license_number, hashedLicenseNo);
         if (isMatch) {
-          users[i].car_details[j].licenseNo = license_number; // Replace hash with original for display
+          // Replace hash with original for display
+          users[i].car_details[j].licenseNo = license_number;
           user = users[i];
           break;
         }
@@ -100,10 +101,12 @@ app.post('/g2', async (req, res) => {
     let user = await User.findOne({ firstname, lastname });
 
     if (user) {
+      // Hash the license number and store it
       const hashedLicenseNumber = await bcrypt.hash(license_number, 10);
       newCar.licenseNo = hashedLicenseNumber;
       user.car_details.push(newCar);
     } else {
+      // Hash the license number and store it
       const hashedLicenseNumber = await bcrypt.hash(license_number, 10);
       newCar.licenseNo = hashedLicenseNumber;
       user = new User({
@@ -123,37 +126,37 @@ app.post('/g2', async (req, res) => {
 });
 
 // POST request handler for updating car details
-app.post('/update-car/:licenseNo', async (req, res) => {
-  const licenseNo = req.params.licenseNo;
-  const { make, model, year, plate_number } = req.body;
+app.post('/update-car', async (req, res) => {
+  const { original_license_number, make, model, year, plate_number } = req.body;
 
   try {
     const users = await User.find();
     let user = null;
+    let carIndex = -1;
 
     for (let i = 0; i < users.length; i++) {
-      const car = users[i].car_details.find(car => car.licenseNo === licenseNo);
-      if (car) {
-        const isMatch = await bcrypt.compare(licenseNo, car.licenseNo);
+      for (let j = 0; j < users[i].car_details.length; j++) {
+        const hashedLicenseNo = users[i].car_details[j].licenseNo;
+
+        const isMatch = await bcrypt.compare(original_license_number, hashedLicenseNo);
         if (isMatch) {
           user = users[i];
+          carIndex = j;
           break;
         }
       }
+      if (user) break;
     }
 
-    if (user) {
-      const car = user.car_details.find(car => car.licenseNo === licenseNo);
-      if (car) {
-        car.make = make;
-        car.model = model;
-        car.year = year;
-        car.platno = plate_number;
-        await user.save();
-        res.render('g_page', { user: user, message: 'Car details updated successfully!' });
-      } else {
-        res.render('g_page', { user: user, message: 'Car not found!' });
-      }
+    if (user && carIndex > -1) {
+      // Update car details
+      user.car_details[carIndex].make = make;
+      user.car_details[carIndex].model = model;
+      user.car_details[carIndex].year = year;
+      user.car_details[carIndex].platno = plate_number;
+
+      await user.save();
+      res.render('g_page', { user: user, message: 'Car details updated successfully!' });
     } else {
       res.render('g_page', { user: null, message: 'User not found!' });
     }

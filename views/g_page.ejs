@@ -44,10 +44,11 @@
 
     <h2>Car Information</h2>
     <% user.car_details.forEach(function(car, index) { %>
-      <form action="/update-car/<%= car.licenseNo %>" method="POST">
+      <form action="/update-car" method="POST">
         <div class="section" id="car-info">
           <div class="form-group">
             <label>License Number: </label>
+            <input type="hidden" name="original_license_number" value="<%= car.licenseNo %>">
             <span><%= car.licenseNo %></span>
           </div>
           <div class="form-group">

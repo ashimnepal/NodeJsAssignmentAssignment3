@@ -384,7 +384,7 @@ button,
 [type=button],
 [type=reset],
 [type=submit] {
-  -webkit-appearance: button;
+ -webkit-appearance: button;
 }
 button:not(:disabled),
 [type=button]:not(:disabled),
@@ -10834,4 +10834,12 @@ header.masthead .post-heading .meta a {
 }
 #submit-btn:hover {
   background-color: #45a049;
+}
+.login-form {
+  max-width: 350px;
+  margin: auto;
+}
+.signup-form {
+  max-width: 350px;
+  margin: auto;
 }

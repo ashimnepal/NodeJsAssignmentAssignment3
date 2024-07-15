@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login and Signup Form</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <style>
+    /* Optional custom styles */
+    body {
+      background-color: #f8f9fa;
+      padding: 50px;
+    }
+    .login-form {
+      max-width: 350px;
+      margin: auto;
+    }
+    .signup-form {
+      max-width: 350px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="login-form">
+          <h2 class="text-center">Login</h2>
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Enter password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="signup-form">
+          <h2 class="text-center">Signup</h2>
+          <form id="signupForm">
+            <div class="form-group">
+              <label for="signupUsername">Username</label>
+              <input type="text" class="form-control" id="signupUsername" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+              <label for="signupPassword">Password</label>
+              <input type="password" class="form-control" id="signupPassword" placeholder="Enter password">
+            </div>
+            <div class="form-group">
+              <label for="signupRepeatPassword">Repeat Password</label>
+              <input type="password" class="form-control" id="signupRepeatPassword" placeholder="Repeat password">
+            </div>
+            <div class="form-group">
+              <label for="userType">User Type</label>
+              <select class="form-control" id="userType">
+                <option value="driver">Driver</option>
+                <option value="examiner">Examiner</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies (jQuery and Popper.js) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-3huNvRwuWgtMdkzUF3Pmz1wlyL2uB8t9rRy5uVj6AY4g3R3E+SWbpeOxQv8DlLg" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function() {
+      // Toggle between login and signup forms
+      $('#signupLink').click(function() {
+        $('#loginForm').hide();
+        $('#signupForm').show();
+      });
+
+      $('#loginLink').click(function() {
+        $('#loginForm').show();
+        $('#signupForm').hide();
+      });
+
+      // Form submission handling
+      $('#signupForm').submit(function(event) {
+        event.preventDefault();
+        // Perform signup form validation and submission
+        let username = $('#signupUsername').val();
+        let password = $('#signupPassword').val();
+        let repeatPassword = $('#signupRepeatPassword').val();
+        let userType = $('#userType').val();
+
+        // Implement your validation logic here (e.g., password match)
+        // Example validation
+        if (password !== repeatPassword) {
+          alert('Passwords do not match!');
+          return;
+        }
+
+        // Example: submit form data using AJAX or submit normally
+        console.log('Signup submitted:', username, password, userType);
+        // Here you can submit the form data to your backend or perform other actions
+      });
+
+      $('#loginForm').submit(function(event) {
+        event.preventDefault();
+        // Perform login form submission
+        let username = $('#username').val();
+        let password = $('#password').val();
+
+        // Example: submit form data using AJAX or submit normally
+        console.log('Login submitted:', username, password);
+        // Here you can submit the form data to your backend or perform other actions
+      });
+    });
+  </script>
+</body>
+</html>
